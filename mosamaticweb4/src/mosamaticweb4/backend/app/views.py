@@ -22,7 +22,6 @@ def filesets(request):
         if len(files) > 0:
             fileset = manager.create_fileset(request.user, fileset_name)
             for f in files:
-                # f_path = os.path.join(settings.MEDIA_ROOT, str(fileset.id), f.name)
                 f_path = os.path.join(str(fileset.id), f.name)
                 default_storage.save(f_path, ContentFile(f.read()))
                 manager.create_file(f_path, fileset)

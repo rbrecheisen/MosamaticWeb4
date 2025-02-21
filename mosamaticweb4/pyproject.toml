@@ -13,6 +13,9 @@ formal_name = "Mosamatic Web 4"
 description = "My first application"
 long_description = """More details about the app should go here.
 """
+
+console_app = true
+
 sources = [
     "src/mosamaticweb4",
 ]

@@ -1,0 +1,17 @@
+briefcase
+django
+django-jinja
+django-session-security
+django-guardian
+django-crispy-forms
+crispy-bootstrap5
+pydicom
+python-gdcm
+numpy
+pandas
+pillow
+tensorflow
+torch
+torchvision
+opencv-python
+pendulum

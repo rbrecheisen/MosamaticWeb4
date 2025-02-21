@@ -1,0 +1,110 @@
+# This project was generated with 0.3.22 using template: https://github.com/beeware/briefcase-template@v0.3.22
+[tool.briefcase]
+project_name = "Mosamatic Web 4"
+bundle = "com.rbeesoft"
+version = "0.0.1"
+url = "https://rbeesoft.com/mosamaticweb4"
+license.file = "LICENSE"
+author = "Ralph Brecheisen"
+author_email = "r.brecheisen@maastrichtuniversity.nl"
+
+[tool.briefcase.app.mosamaticweb4]
+formal_name = "Mosamatic Web 4"
+description = "My first application"
+long_description = """More details about the app should go here.
+"""
+sources = [
+    "src/mosamaticweb4",
+]
+
+test_sources = [
+    "tests",
+]
+
+requires = [
+    "django",
+    "django-jinja",
+    "django-session-security",
+    "django-guardian",
+    "django-crispy-forms",
+    "crispy-bootstrap5",
+]
+
+test_requires = [
+    # Add your cross-platform test requirements here
+]
+
+[tool.briefcase.app.mosamaticweb4.macOS]
+universal_build = true
+requires = [
+    # Add your macOS-specific app requirements here
+]
+
+[tool.briefcase.app.mosamaticweb4.linux]
+requires = [
+    # Add your Linux-specific app requirements here
+]
+
+[tool.briefcase.app.mosamaticweb4.linux.system.debian]
+system_requires = [
+    # Add any system packages needed at build the app here
+]
+
+system_runtime_requires = [
+    # Add any system packages needed at runtime here
+]
+
+[tool.briefcase.app.mosamaticweb4.linux.system.rhel]
+system_requires = [
+    # Add any system packages needed at build the app here
+]
+
+system_runtime_requires = [
+    # Add any system packages needed at runtime here
+]
+
+[tool.briefcase.app.mosamaticweb4.linux.system.suse]
+system_requires = [
+    # Add any system packages needed at build the app here
+]
+
+system_runtime_requires = [
+    # Add any system packages needed at runtime here
+]
+
+[tool.briefcase.app.mosamaticweb4.linux.system.arch]
+system_requires = [
+    # Add any system packages needed at build the app here
+]
+
+system_runtime_requires = [
+    # Add any system packages needed at runtime here
+]
+
+[tool.briefcase.app.mosamaticweb4.linux.flatpak]
+flatpak_runtime = "org.freedesktop.Platform"
+flatpak_runtime_version = "24.08"
+flatpak_sdk = "org.freedesktop.Sdk"
+
+[tool.briefcase.app.mosamaticweb4.windows]
+requires = [
+    # Add your Windows-specific app requirements here
+]
+
+# Mobile deployments
+[tool.briefcase.app.mosamaticweb4.iOS]
+requires = [
+    # Add your iOS-specific app requirements here
+]
+
+[tool.briefcase.app.mosamaticweb4.android]
+requires = [
+    # Add your Android-specific app requirements here
+]
+
+# Web deployments
+[tool.briefcase.app.mosamaticweb4.web]
+requires = [
+    # Add your web-specific app requirements here
+]
+

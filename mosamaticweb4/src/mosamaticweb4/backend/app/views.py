@@ -2,7 +2,6 @@ import os
 
 from django.shortcuts import redirect, render
 from django.contrib.auth import logout
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -59,6 +58,25 @@ def logs(request):
     if request.method == 'POST':
         manager.delete_messages()
     return render(request, 'logs.html', context={'messages': manager.get_messages()})
+
+
+@login_required
+def tasks(request):
+    pass
+
+
+@login_required
+def task(request):
+    pass
+
+
+@login_required
+def pipeline(request):
+    """
+    Runs task pipeline based on an input directory and a pipeline configuration.
+    A new fileset will be created from the input directory. 
+    """
+    pass
 
 
 @login_required

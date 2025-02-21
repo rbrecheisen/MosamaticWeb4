@@ -12,7 +12,7 @@ LOG = logging.getLogger('mosamaticweb4')
 
 class LogManager:
     def __init__(self):
-        self.db_exists = False
+        self._db_exists = False
 
     def write_to_db(self, message, mode):
         # Only write to database if table (data model) exists
@@ -22,10 +22,10 @@ class LogManager:
             with connection.cursor() as cursor:
                 cursor.execute('SELECT 1 FROM information_schema.tables WHERE table_name=%s', [table_name])
                 if cursor.fetchone():
-                    self.db_exists = True
+                    self._db_exists = True
         except OperationalError:
-            self.db_exists = False
-        if self.db_exists:
+            self._db_exists = False
+        if self._db_exists:
             LogOutputModel.objects.create(message=message, mode=mode)
 
     def info(self, message):

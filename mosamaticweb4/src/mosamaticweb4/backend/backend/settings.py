@@ -3,6 +3,12 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR_LOCAL = os.path.join(Path.home(), 'MosamaticWeb4/data')
+DATA_DIR = os.environ.get('DATA_DIR', DATA_DIR_LOCAL)
+MODELS_DIR = os.path.join(Path.home(), 'MosamaticWeb4/models')
+
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(MODELS_DIR, exist_ok=True)
 
 SECRET_KEY = 'django-insecure-05lf8*j1e@nfcc^!94rrjg)m0l#$@a=93*g*8y+@twaoc68#nd'
 
@@ -113,6 +119,9 @@ LOGOUT_REDIRECT_URL = '/'
 SESSION_SECURITY_WARN_AFTER = 840
 SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+MEDIA_URL = '/filesets/'
+MEDIA_ROOT = os.path.join(DATA_DIR, 'filesets')
 
 LANGUAGE_CODE = 'en-us'
 

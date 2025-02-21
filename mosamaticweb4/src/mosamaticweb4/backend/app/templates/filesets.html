@@ -25,6 +25,19 @@
                             <th>Uploaded</th>
                             <th>Commands</th>
                         </tr>
+                        {% for fileset in filesets %}
+                            <tr>
+                                <td><a href="/filesets/{{ fileset.id }}">{{ fileset.name }}</a></td>
+                                <td>{{ fileset.owner }}</td>
+                                <td>{{ fileset.size }}</td>
+                                <td>{{ fileset.created }}</td>
+                                {%  if user == fileset.owner or user.is_staff %}
+                                    <td>[<a href="/filesets/{{ fileset.id }}?action=delete">delete</a>]</td>
+                                {% else %}
+                                    <td><i>None permitted</i></td>
+                                {%  endif %}
+                            </tr>
+                        {% endfor %}
                     </table>
                 </div>
             </div>

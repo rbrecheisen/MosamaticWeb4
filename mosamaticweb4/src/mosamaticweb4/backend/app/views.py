@@ -8,8 +8,10 @@ from django.core.files.base import ContentFile
 from django.http import HttpResponse, HttpResponseForbidden
 from wsgiref.util import FileWrapper
 
-from .data.datamanager import DataManager
-from .data.logmanager import LogManager
+from .managers.datamanager import DataManager
+from .managers.logmanager import LogManager
+
+LOG = LogManager()
 
 
 @login_required
@@ -20,12 +22,13 @@ def filesets(request):
         files = request.FILES.getlist('files')
         if len(files) > 0:
             fileset = manager.create_fileset(request.user, fileset_name)
+            LOG.info(f'Created new fileset {fileset.name} with {len(files)} files')
             for f in files:
                 f_path = os.path.join(str(fileset.id), f.name)
                 default_storage.save(f_path, ContentFile(f.read()))
                 manager.create_file(f_path, fileset)
-        return render(request, 'filesets.html', context={'filesets': manager.get_filesets(request.user)})
-    return render(request, 'filesets.html')
+                LOG.info(f'Added file {f_path} to fileset')
+    return render(request, 'filesets.html', context={'filesets': manager.get_filesets(request.user)})
 
 
 @login_required
@@ -40,16 +43,21 @@ def fileset(request, fileset_id):
             with open(zip_file_path, 'rb') as f:
                 response = HttpResponse(FileWrapper(f), content_type='application/zip')
                 response['Content-Disposition'] = 'attachment; filename="{}.zip"'.format(fileset.name)
+            LOG.info(f'Created ZIP archive for fileset {fileset.name} ({zip_file_path})')
             return response
         elif action == 'delete':
             manager.delete_fileset(fileset)
-            return render(request, 'filesets.html', context={'filesets': manager.get_filesets(request.user)})
+            LOG.info(f'Deleted fileset {fileset.name}')
         elif action == 'rename':
-            fileset = manager.rename_fileset(fileset, request.GET.get('new_name'))
+            new_name = request.GET.get('new_name')
+            fileset = manager.rename_fileset(fileset, new_name)
+            LOG.info(f'Renamed fileset {fileset.name} to {new_name}')
         else:
             pass
         return render(request, 'fileset.html', context={'fileset': fileset, 'files': manager.get_files(fileset)})
-    return HttpResponseForbidden(f'Wrong method ({request.method}) or action ({action})')
+    message = f'Wrong method ({request.method}) or action ({action})'
+    LOG.error(message)
+    return HttpResponseForbidden(message)
 
 
 @login_required
@@ -72,10 +80,6 @@ def task(request):
 
 @login_required
 def pipeline(request):
-    """
-    Runs task pipeline based on an input directory and a pipeline configuration.
-    A new fileset will be created from the input directory. 
-    """
     pass
 
 

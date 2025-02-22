@@ -11,9 +11,11 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Clear logs</button>
                     </form>
-                    {% for message in messages %}
-                        {{ message }}<br>
-                    {% endfor %}
+                    <div style="font-family: 'Courier New', Courier, monospace;">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row"><p style="margin-top: 10px">[<a href="/filesets/">Filesets</a>]</p></div>
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-header">Tasks</div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th style="width: 300px;">Task</th>
+                            <th>Description</th>    
+                        </tr>
+                        {% for task in tasks %}
+                            <tr>
+                                <td><a href="{{ task.url_pattern }}">{{ task.display_name }}</a></td>
+                                <td>{{ task.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

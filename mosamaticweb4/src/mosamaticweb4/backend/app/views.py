@@ -10,6 +10,7 @@ from wsgiref.util import FileWrapper
 
 from .managers.datamanager import DataManager
 from .managers.logmanager import LogManager
+from .managers.taskmanager import TaskManager
 
 LOG = LogManager()
 
@@ -75,8 +76,10 @@ def tasks(request):
 
 
 @login_required
-def task(request):
-    pass
+def task(request, task_name):
+    manager = TaskManager()
+    manager.run_task(task_name)
+    return render(request, 'tasks.html', context={'tasks': []})
 
 
 @login_required

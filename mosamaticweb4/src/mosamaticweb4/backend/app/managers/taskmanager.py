@@ -12,7 +12,7 @@ class TaskManager:
     def run_task(self, name):
         task_class = TASK_REGISTRY.get(name, None)
         if task_class is not None:
-            task = task_class()
+            task = task_class() # Where do inputs and outputs come from?
             task_thread = threading.Thread(target=task.run)
             task_thread.start()
 

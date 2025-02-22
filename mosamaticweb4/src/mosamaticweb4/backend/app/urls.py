@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import custom_logout, filesets, fileset, logs, tasks, task, pipeline
+from .views import custom_logout, filesets, fileset, logs, tasks, task, pipeline, help
 
 
 urlpatterns = [
@@ -11,5 +11,6 @@ urlpatterns = [
     path('tasks/<str:task_name>', task),
     path('pipeline/', pipeline),
     path('accounts/logout/', custom_logout, name='logout'),
+    path('help/', help),
     path('logs/', logs),
 ]

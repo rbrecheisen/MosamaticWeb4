@@ -48,6 +48,7 @@ def fileset(request, fileset_id):
         elif action == 'delete':
             manager.delete_fileset(fileset)
             LOG.info(f'Deleted fileset {fileset.name}')
+            return render(request, 'filesets.html', context={'filesets': manager.get_filesets(request.user)})
         elif action == 'rename':
             new_name = request.GET.get('new_name')
             fileset = manager.rename_fileset(fileset, new_name)
@@ -81,6 +82,11 @@ def task(request):
 @login_required
 def pipeline(request):
     pass
+
+
+@login_required
+def help(request):
+    return render(request, 'help/index.html')
 
 
 @login_required

@@ -10,7 +10,7 @@
                     <table class="table">
                         <tr><th style="width: 300px;">Task</th></tr>
                         {% for task in tasks %}
-                            <tr><td><a href="{{ task.url_pattern }}">{{ task.name }}</a></td></tr>
+                            <tr><td><a href="{{ task.url_pattern }}">{{ task }}</a></td></tr>
                         {% endfor %}
                     </table>
                 </div>

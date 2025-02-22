@@ -4,7 +4,7 @@ from ..tasks.copyfilestask.copyfilestask import CopyFilesTask
 
 TASK_REGISTRY = {
     'Task': (Task, ),
-    'CopyFilesTask': (),
+    'CopyFilesTask': (CopyFilesTask, ),
 }
 
 # from mosamaticdesktop.tasks.copyfilestask.copyfilestask import CopyFilesTask

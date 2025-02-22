@@ -9,10 +9,10 @@ class TaskManager:
     def __init__(self):
         pass
 
-    def run_task(self):
-        # task = TASK_REGISTRY.get('CopyFilesTask', None)
-        task = Task(None, None, None)
-        if task is not None:
+    def run_task(self, name):
+        task_class = TASK_REGISTRY.get(name, None)
+        if task_class is not None:
+            task = task_class()
             task_thread = threading.Thread(target=task.run)
             task_thread.start()
 

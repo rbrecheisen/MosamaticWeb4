@@ -72,7 +72,8 @@ def logs(request):
 
 @login_required
 def tasks(request):
-    pass
+    manager = TaskManager()
+    return render(request, 'tasks.html', context={'tasks': manager.get_tasks()})
 
 
 @login_required

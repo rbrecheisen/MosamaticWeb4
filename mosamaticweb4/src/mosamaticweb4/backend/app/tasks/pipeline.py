@@ -1,3 +1,68 @@
+import os
+import yaml
+
+# from ..managers.logmanager import LogManager
+
+# LOG = LogManager()
+
+
+class Pipeline:
+    def __init__(self, config_yaml_or_dict):
+        self._input_dir = None
+        self._tasks = []
+        self._current_task_idx = 0
+        self.load_config(config_yaml_or_dict)
+
+    def add_task(self, task):
+        self._tasks.append(task)
+
+    def load_config(self, config_yaml_or_dict):
+        if isinstance(config_yaml_or_dict, dict):
+            pass
+        else:
+            self.load_config_yaml(config_yaml_or_dict)
+
+    def load_config_dict(self, config_dict):
+        pass
+
+    def load_config_yaml(self, config_yaml):
+        # Load YAML file
+        with open(config_yaml, 'r') as f:
+            config = yaml.safe_load(f)
+        # Check contents (especially existence of directories)
+        errors = self.check_config(config)
+        if len(errors) > 0:
+            # LOG.info(f'ERROR: configuration file has errors:')
+            for error in errors:
+                print(f' - {error}')
+            return
+        # Get input directory for pipeline and count the number of files
+        self._input_dir = config['input_dir']
+        if self._input_dir is None:
+            raise RuntimeError(f'Pipeline has no input directory!')
+        # Load task instances. When we run tasks through the pipeline the 
+        # output directory names will be prepended with an index
+        self._tasks = []
+        for task_config in config['tasks']:
+            class_name = task_config['class']
+            module_name = f'mosamaticdesktop.tasks.{class_name.lower()}.{class_name.lower()}'
+            input_dir = task_config['input_dir']
+            # The first task may not have an input directory. In that case, take the main
+            # pipeline input directory
+            if not input_dir:
+                # LOG.info(f'Pipeline.load_config() task {class_name} has no input directory. Using pipeline input directory...')
+                input_dir = self._input_dir
+            output_dir_name = task_config['output_dir_name']
+            params = task_config['params']
+            module = importlib.import_module(module_name)
+            task_class = getattr(module, class_name)
+            task = task_class(input_dir, output_dir_name, params)
+            self._tasks.append(task)
+
+    def run(self):
+        for task in self._tasks:
+            task.run()
+
 # import os
 # import yaml
 # import importlib

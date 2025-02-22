@@ -43,12 +43,24 @@ class Task:
         self._canceled = True
 
     def execute(self):
+        print('Running task')
         for i in range(5):
             if self._canceled:
                 self.set_status(TaskStatus.CANCELED)
+                print('Task cancelled')
                 return 
             time.sleep(1)
             self.set_progress(i, 5)
+            print(f'Task iteration {i} finished')
+
+    def run(self):
+        self.set_status(TaskStatus.RUNNING)
+        try:
+            self.execute()
+            if not self.is_canceled():
+                self.set_status(TaskStatus.COMPLETED)
+        except Exception as e:
+            self.set_status(TaskStatus.FAILED)
 
     def set_progress(self, step, nr_steps):
         self._progress = int(((step + 1) / (nr_steps)) * 100)

@@ -1,3 +1,12 @@
+from ..tasks.task import Task
+from ..tasks.copyfilestask.copyfilestask import CopyFilesTask
+
+
+TASK_REGISTRY = {
+    'Task': (Task, ),
+    'CopyFilesTask': (),
+}
+
 # from mosamaticdesktop.tasks.copyfilestask.copyfilestask import CopyFilesTask
 # from mosamaticdesktop.tasks.copyfilestask.copyfilestaskdialog import CopyFilesTaskDialog
 # from mosamaticdesktop.tasks.decompressdicomfilestask.decompressdicomfilestask import DecompressDicomFilesTask

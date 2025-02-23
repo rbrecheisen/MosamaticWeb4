@@ -11,6 +11,7 @@ from wsgiref.util import FileWrapper
 from .managers.datamanager import DataManager
 from .managers.logmanager import LogManager
 from .managers.taskmanager import TaskManager
+from .tasks.taskregistry import TASK_REGISTRY
 
 LOG = LogManager()
 
@@ -73,7 +74,8 @@ def logs(request):
 @login_required
 def tasks(request):
     manager = TaskManager()
-    return render(request, 'tasks.html', context={'task_names': manager.get_task_names()})
+    task_names = manager.get_task_names()
+    return render(request, 'tasks.html', context={'task_names': task_names})
 
 
 @login_required
@@ -81,6 +83,15 @@ def task(request, task_name):
     if request.method == 'POST':
         task_info = TASK_REGISTRY.get(task_name, None)
         if task_info:
+            # Get task inputs
+            inputs = {}
+            for input_name in task_info['inputs']:
+                input_id = request.POST.get(input_name, None)
+                if input_id:
+                    inputs[input_name] = input_id
+                else:
+                    LOG.error(f'Missing input {input_name}')
+            # Get task parameters
             params = {}
             for param_name in task_info['params']:
                 param_value = request.POST.get(param_name, None)
@@ -88,8 +99,11 @@ def task(request, task_name):
                     params[param_name] = param_value
                 else:
                     LOG.error(f'Missing parameter {param_name}')
-            manager = TaskManager()
-            manager.run_task(task_name, params)
+            # Get inputs from database
+            # Create outputs
+            
+            # manager = TaskManager()
+            # manager.run_task(task_name, params)
     manager = DataManager()
     return render(request, f'tasks/{task_name}.html', context={
         'task_name': task_name,

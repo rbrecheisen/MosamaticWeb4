@@ -3,7 +3,14 @@ from ..tasks.copyfilestask.copyfilestask import CopyFilesTask
 
 
 TASK_REGISTRY = {
-    'CopyFilesTask': (CopyFilesTask, ),
+    'CopyFilesTask': {
+        'class': CopyFilesTask,
+        'params': [
+            'input_fileset_id',
+            'output_fileset_name',
+            'delay'
+        ]
+    }
 }
 
 # from mosamaticdesktop.tasks.copyfilestask.copyfilestask import CopyFilesTask

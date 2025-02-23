@@ -79,10 +79,17 @@ def tasks(request):
 @login_required
 def task(request, task_name):
     if request.method == 'POST':
-        # Get task parameters (from TASK_REGISTRY)
-        manager = TaskManager()
-        manager.run_task(task_name)
-        return render(request, 'tasks.html', context={'tasks': []})
+        task_info = TASK_REGISTRY.get(task_name, None)
+        if task_info:
+            params = {}
+            for param_name in task_info['params']:
+                param_value = request.POST.get(param_name, None)
+                if param_value
+                    params[param_name] = param_value
+                else:
+                    LOG.error(f'Missing parameter {param_name}')
+            manager = TaskManager()
+            manager.run_task(task_name, params)
     manager = DataManager()
     return render(request, f'tasks/{task_name}.html', context={
         'task_name': task_name,

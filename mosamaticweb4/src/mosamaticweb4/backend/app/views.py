@@ -79,11 +79,13 @@ def tasks(request):
 @login_required
 def task(request, task_name):
     if request.method == 'POST':
+        # Get task parameters (from TASK_REGISTRY)
         manager = TaskManager()
         manager.run_task(task_name)
         return render(request, 'tasks.html', context={'tasks': []})
     manager = DataManager()
     return render(request, f'tasks/{task_name}.html', context={
+        'task_name': task_name,
         'filesets': manager.get_filesets(request.user)
     })
 

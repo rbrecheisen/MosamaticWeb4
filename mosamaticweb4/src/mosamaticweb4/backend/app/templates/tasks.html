@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <table class="table">
                         {% for task_name in task_names %}
-                            <tr><td><a href="/tasks/{{ task_name|lowercase }}">{{ task_name }}</a></td></tr>
+                            <tr><td><a href="/tasks/{{ task_name }}">{{ task_name }}</a></td></tr>
                         {% endfor %}
                     </table>
                 </div>

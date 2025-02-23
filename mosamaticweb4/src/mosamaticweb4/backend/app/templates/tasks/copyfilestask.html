@@ -1,15 +1,28 @@
 {% extends "../base.html" %}
+{% load extra_filters %}
 {% block content %}
 <div class="container-fluid">
     <div class="row"><p style="margin-top: 10px">[<a href="/tasks/">Tasks</a>]</p></div>
     <div class="row">
         <div class="col-sm-10">
             <div class="card" style="margin-top: 10px;">
-                <div class="card-header">CopyFilesTask</div>
+                <div class="card-header">{{ task_name }}</div>
                 <div class="card-body">
-                    {% for fileset in filesets %}
-                        {{ fileset.name }}<br>
-                    {% endfor %}
+                    <form action="/tasks/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_name" value="{{ task_name }}" />
+                        <select class="form-select" name="input_fileset_id">
+                            <option selected>Select input fileset</option>
+                            {% for fileset in filesets %}
+                                <option value="{{ fileset.id }}">{{ fileset.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <label for="output_fileset_name" class="form-label">Output fileset name (optional)</label>
+                        <input type="text" class="form-control" id="output_fileset_name" name="output|_fileset_name" placeholder="{{ task_name|lowercase }}">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Run task</button>
+                    </form>
                 </div>
             </div>
         </div>

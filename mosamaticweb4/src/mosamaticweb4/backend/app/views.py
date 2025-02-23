@@ -73,41 +73,35 @@ def logs(request):
 
 @login_required
 def tasks(request):
-    manager = TaskManager()
-    task_names = manager.get_task_names()
-    return render(request, 'tasks.html', context={'task_names': task_names})
+    return render(request, 'tasks.html', context={'task_names': TASK_REGISTRY.keys()})
 
 
 @login_required
 def task(request, task_name):
+    data_manager = DataManager()
     if request.method == 'POST':
         task_info = TASK_REGISTRY.get(task_name, None)
         if task_info:
-            # Get task inputs
-            inputs = {}
-            for input_name in task_info['inputs']:
-                input_id = request.POST.get(input_name, None)
-                if input_id:
-                    inputs[input_name] = input_id
-                else:
-                    LOG.error(f'Missing input {input_name}')
-            # Get task parameters
+            
+            input_filesets = []
+            for fileset_name in task_info['input_filesets']:
+                fileset_id = request.POST.get(fileset_name, None)
+                if fileset_id:
+                    fs = data_manager.get_fileset(fileset_id)
+                    input_filesets.append(fs)
+            
             params = {}
             for param_name in task_info['params']:
                 param_value = request.POST.get(param_name, None)
-                if param_value
+                if param_value:
                     params[param_name] = param_value
-                else:
-                    LOG.error(f'Missing parameter {param_name}')
-            # Get inputs from database
-            # Create outputs
             
-            # manager = TaskManager()
-            # manager.run_task(task_name, params)
-    manager = DataManager()
+            task_manager = TaskManager()
+            task_manager.run_task(task_name, input_filesets, params)
+
     return render(request, f'tasks/{task_name}.html', context={
         'task_name': task_name,
-        'filesets': manager.get_filesets(request.user)
+        'filesets': data_manager.get_filesets(request.user),
     })
 
 

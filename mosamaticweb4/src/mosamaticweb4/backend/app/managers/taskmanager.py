@@ -7,10 +7,10 @@ from ..tasks.taskregistry import TASK_REGISTRY
 
 class TaskManager:
     def __init__(self):
-        self._tasks = TASK_REGISTRY.keys()
+        self._tasks = []
 
-    def get_tasks(self):
-        return self._tasks
+    def get_task_names(self):
+        return TASK_REGISTRY.keys()
 
     def run_task(self, name):
         task_class = TASK_REGISTRY.get(name, None)

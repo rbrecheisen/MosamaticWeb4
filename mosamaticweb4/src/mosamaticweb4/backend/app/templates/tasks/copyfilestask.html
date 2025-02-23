@@ -7,6 +7,9 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">CopyFilesTask</div>
                 <div class="card-body">
+                    {% for fileset in filesets %}
+                        {{ fileset.name }}<br>
+                    {% endfor %}
                 </div>
             </div>
         </div>

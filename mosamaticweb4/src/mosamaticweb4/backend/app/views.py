@@ -73,14 +73,19 @@ def logs(request):
 @login_required
 def tasks(request):
     manager = TaskManager()
-    return render(request, 'tasks.html', context={'tasks': manager.get_tasks()})
+    return render(request, 'tasks.html', context={'task_names': manager.get_task_names()})
 
 
 @login_required
 def task(request, task_name):
-    manager = TaskManager()
-    manager.run_task(task_name)
-    return render(request, 'tasks.html', context={'tasks': []})
+    if request.method == 'POST':
+        manager = TaskManager()
+        manager.run_task(task_name)
+        return render(request, 'tasks.html', context={'tasks': []})
+    manager = DataManager()
+    return render(request, f'tasks/{task_name}.html', context={
+        'filesets': manager.get_filesets(request.user)
+    })
 
 
 @login_required

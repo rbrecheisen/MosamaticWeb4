@@ -8,9 +8,7 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">
                     Fileset <b>{{ fileset.name }}</b><br>
-                    <i style="font-size: small;">
-                        id: {{ fileset.id }}, owner: {{ fileset.owner }}, public: {{ fileset.public }}
-                    </i>
+                    <i style="font-size: small;">id: {{ fileset.id }}, owner: {{ fileset.owner }}</i>
                 </div>
                 <div class="card-body">
                     {% if user == fileset.owner or user.is_staff %}

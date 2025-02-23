@@ -28,7 +28,7 @@ class DataManager:
     @staticmethod
     def get_filesets(user):
         if not user.is_staff:
-            return FileSetModel.objects.filter(Q(owner=user) | Q(public=True))
+            return FileSetModel.objects.filter(Q(owner=user))
         return FileSetModel.objects.all()
 
     @staticmethod

@@ -8,3 +8,9 @@ register = template.Library()
 @stringfilter
 def endswith(text, postfix):
     return text.endswith(postfix)
+
+
+@register.filter
+@stringfilter
+def lowercase(text):
+    return text.lower()

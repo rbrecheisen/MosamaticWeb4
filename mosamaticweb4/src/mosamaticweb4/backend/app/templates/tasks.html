@@ -9,7 +9,6 @@
                 <div class="card-header">Tasks</div>
                 <div class="card-body">
                     <table class="table">
-                        <tr><th style="width: 300px;">Task</th></tr>
                         {% for task_name in task_names %}
                             <tr><td><a href="/tasks/{{ task_name|lowercase }}">{{ task_name }}</a></td></tr>
                         {% endfor %}

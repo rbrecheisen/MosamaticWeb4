@@ -1,8 +1,11 @@
 # MosamaticWeb4
-
 New and simplified version of Mosamatic using Briefcase
 
-# Introduction
+# To-do
+- DecompressDicomFilesTask
+- RescaleDicomFilesTask
+- MuscleFatSegmentationL3Task
+- CalculateMetricsTask
 
-Mosamatic Web 4 is the latest incarnation of the Mosamatic tool for body composition
-analysis with CT images at L3 level.
+# Done
+- CopyFilesTask

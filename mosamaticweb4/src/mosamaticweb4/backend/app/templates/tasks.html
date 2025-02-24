@@ -57,12 +57,7 @@
                         {% if current_task %}
                             <tr>
                                 <td>{{ current_task.name }}</td>
-                                <td>[
-                                    {% for input_fileset in current_task.input_filesets %}
-                                        {{ input_fileset.name }},&nbsp;
-                                    {% endfor %}
-                                    ]
-                                </td>
+                                <td>{{ current_task.input_filesets }}</td>
                                 <td>{{ current_task.status }}</td>
                                 <td>{{ current_task.progress }}</td>
                                 <td>

@@ -5,7 +5,7 @@ TASK_REGISTRY = {
     'CopyFilesTask': {
         'class': CopyFilesTask,
         'input_filesets': [
-            'fileset_id',
+            'fileset',
         ],
         'params': [
             'delay',

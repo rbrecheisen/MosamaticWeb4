@@ -15,22 +15,46 @@ class TaskStatus(Enum):
 
 
 class Task(threading.Thread):
-    def __init__(self, input_filesets, params, task_manager):
+    def __init__(self, input_filesets, params):
         super(Task, self).__init__()
         self._name = self.__class__.__name__
         self._input_filesets = input_filesets
         self._params = params
-        self._task_manager = task_manager
         self._cancel_event = threading.Event()
         self._progress = 0
         self._status = TaskStatus.IDLE
 
+    # PROPERTIES
+
     @property
     def name(self):
         return self._name
-
+    
+    @property
     def input_filesets(self):
-        return self._input_filesets
+        fileset_names = []
+        for fs in self._input_filesets.values():
+            fileset_names.append(fs.name)
+        return fileset_names
+    
+    @property
+    def params(self):
+        return self._params
+
+    @property
+    def progress(self):
+        return self._progress
+
+    @property
+    def status(self):
+        return self._status.value
+    
+    # FUNCTIONS
+
+    def input_fileset(self, name):
+        if name in self._input_filesets.keys():
+            return self._input_filesets[name]
+        return None
 
     def has_param(self, name):
         if self._params is not None:
@@ -61,17 +85,9 @@ class Task(threading.Thread):
         self._cancel_event.set()
         self.set_status(TaskStatus.CANCELED)
 
-    @property
-    def progress(self):
-        return self._progress
-
     def set_progress(self, step, nr_steps):
         self._progress = int(((step + 1) / (nr_steps)) * 100)
         LOG.info(f'{self.__class__.__name__}: progress = {self._progress}')
-
-    @property
-    def status(self):
-        return self._status.value
 
     def set_status(self, status, message=None):
         self._status = status

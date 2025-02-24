@@ -49,7 +49,6 @@
                     <table class="table">
                         <tr>
                             <th>Task name</th>
-                            <th>Input filesets</th>
                             <th>Status</th>
                             <th>Progress</th>
                             <th>Commands</th>
@@ -57,7 +56,6 @@
                         {% if current_task %}
                             <tr>
                                 <td>{{ current_task.name }}</td>
-                                <td>{{ current_task.input_filesets }}</td>
                                 <td>{{ current_task.status }}</td>
                                 <td>{{ current_task.progress }}</td>
                                 <td>

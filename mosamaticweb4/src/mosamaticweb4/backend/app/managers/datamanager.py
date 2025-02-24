@@ -9,16 +9,44 @@ from ..models import FileModel, FileSetModel
 
 
 class DataManager:
-    def __init__(self):
-        pass
-
     @staticmethod
     def create_file(path, fileset):
+        """
+        Creates new FileModel object.
+
+        Parameters
+        ----------
+        path : str
+            Path to an existing file.
+        fileset : FileSetModel
+            FileSetModel object which the FileModel object should belong to.
+
+        Returns
+        -------
+        FileModel
+            FileModel object created.
+        """
         return FileModel.objects.create(
             name=os.path.split(path)[1], path=path, fileset=fileset)
     
     @staticmethod
     def create_fileset(user, name=None):
+        """
+        Creates new FileSetModel object.
+
+        Parameters
+        ----------
+        user : User
+            User object corresponding to the user in the HTTP request.
+        name : str
+            Optional name for the FileSetModel object. A default name
+            will be generated if no name is provided.
+
+        Returns
+        -------
+        FileSetModel
+            FileSetModel object created.
+        """
         fileset_name = name
         if name is None or name == '':
             fileset_name = 'fileset-{}'.format(timezone.now().strftime('%Y%m%d%H%M%S'))

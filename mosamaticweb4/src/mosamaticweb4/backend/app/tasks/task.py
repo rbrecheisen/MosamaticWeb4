@@ -15,12 +15,12 @@ class TaskStatus(Enum):
 
 
 class Task(threading.Thread):
-    def __init__(self, input_filesets, params, output_fileset_dir, queue):
+    def __init__(self, input_dirs, output_dir, params, queue):
         super(Task, self).__init__()
         self._name = self.__class__.__name__
-        self._input_filesets = input_filesets
+        self._input_dirs = input_dirs
+        self._output_dir = output_dir
         self._params = params
-        self._output_fileset_dir = output_fileset_dir
         self._queue = queue
         self._cancel_event = threading.Event()
         self._progress = 0
@@ -33,21 +33,6 @@ class Task(threading.Thread):
         return self._name
     
     @property
-    def input_filesets(self):
-        fileset_names = []
-        for fs in self._input_filesets.values():
-            fileset_names.append(fs.name)
-        return fileset_names
-    
-    @property
-    def params(self):
-        return self._params
-    
-    @property
-    def output_fileset_dir(self):
-        return self._output_fileset_dir
-
-    @property
     def progress(self):
         return self._progress
 
@@ -57,18 +42,16 @@ class Task(threading.Thread):
     
     # FUNCTIONS
 
-    def input_fileset(self, name):
-        if name in self._input_filesets.keys():
-            return self._input_filesets[name]
+    def get_input_dir(self, name):
+        if name in self._input_dirs.keys():
+            return self._input_dirs[name]
         return None
-
-    def has_param(self, name):
-        if self._params is not None:
-            return name in self._params.keys()
-        return False
     
-    def param(self, name, default=None):
-        if self.has_param(name):
+    def get_output_dir(self):
+        return self._output_dir
+
+    def get_param(self, name, default=None):
+        if name in self._params.keys():
             return self._params[name]
         return default
     
@@ -79,7 +62,7 @@ class Task(threading.Thread):
         self.set_status(TaskStatus.RUNNING)
         try:
             self.execute()
-            if not self.is_canceled():
+            if not self.is_canceled():                
                 self.set_status(TaskStatus.COMPLETED)
         except Exception as e:
             self.set_status(TaskStatus.FAILED, str(e))

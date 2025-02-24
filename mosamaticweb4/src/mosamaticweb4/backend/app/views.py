@@ -5,7 +5,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from wsgiref.util import FileWrapper
 
 from .managers.datamanager import DataManager
@@ -14,6 +14,10 @@ from .managers.taskmanager import TaskManager
 from .tasks.taskregistry import TASK_REGISTRY
 
 LOG = LogManager()
+
+
+def is_auto_refresh(request):
+    return True if request.GET.get('auto-refresh', '0') == '1' else False
 
 
 @login_required
@@ -73,36 +77,31 @@ def logs(request):
 
 @login_required
 def tasks(request):
-    return render(request, 'tasks.html', context={'task_names': TASK_REGISTRY.keys()})
+    task_manager = TaskManager()
+    auto_refresh = True if request.GET.get('auto-refresh', '0') == '1' else False
+    if request.method == 'GET':
+        remove = True if request.GET.get('remove', '0') == '1' else False
+        if remove:
+            task_manager.remove_current_task()
+        cancel = True if request.GET.get('cancel', '0') == '1' else False
+        if cancel:
+            task_manager.cancel_current_task()
+    current_task = task_manager.get_current_task()
+    if current_task:
+        if current_task.status == 'completed' or current_task.status == 'failed' or current_task.status == 'canceled':
+            auto_refresh = False
+    return render(request, 'tasks.html', context={'task_names': TASK_REGISTRY.keys(), 'current_task': current_task, 'auto_refresh': auto_refresh})
 
 
 @login_required
 def task(request, task_name):
     data_manager = DataManager()
+    task_manager = TaskManager()
     if request.method == 'POST':
-        task_info = TASK_REGISTRY.get(task_name, None)
-        if task_info:
-            
-            input_filesets = []
-            for fileset_name in task_info['input_filesets']:
-                fileset_id = request.POST.get(fileset_name, None)
-                if fileset_id:
-                    fs = data_manager.get_fileset(fileset_id)
-                    input_filesets.append(fs)
-            
-            params = {}
-            for param_name in task_info['params']:
-                param_value = request.POST.get(param_name, None)
-                if param_value:
-                    params[param_name] = param_value
-            
-            task_manager = TaskManager()
-            task_manager.run_task(task_name, input_filesets, params)
-
-    return render(request, f'tasks/{task_name}.html', context={
-        'task_name': task_name,
-        'filesets': data_manager.get_filesets(request.user),
-    })
+        task_manager.run_task_from_request(task_name, request)
+        return redirect('/tasks/')
+    context = {'task_name': task_name, 'filesets': data_manager.get_filesets(request.user)}
+    return render(request, f'tasks/{task_name}.html', context=context)
 
 
 @login_required

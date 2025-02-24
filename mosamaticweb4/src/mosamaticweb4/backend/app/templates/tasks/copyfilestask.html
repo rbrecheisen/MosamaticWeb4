@@ -8,9 +8,10 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">{{ task_name }}</div>
                 <div class="card-body">
-                    <form action="/tasks/{{ task_name }}" method="post" enctype="multipart/form-data">
+                    <form action="/tasks/{{ task_name }}" method="post" enctype="multipart/form-data" id="my-form">
                         {% csrf_token %}
-                        <input type="hidden" name="task_name" value="{{ task_name }}" />
+                        <input type="hidden" name="task_name" value="{{ task_name }}">
+                        <input type="hidden" name="cancel" value="0">
                         <select class="form-select" name="fileset_id">
                             <option selected>Select input fileset</option>
                             {% for fileset in filesets %}

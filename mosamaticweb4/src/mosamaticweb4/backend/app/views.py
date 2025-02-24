@@ -89,7 +89,6 @@ def tasks(request):
     current_task = task_manager.get_current_task()
     if current_task:
         if current_task.status == 'completed' or current_task.status == 'failed' or current_task.status == 'canceled':
-            # task_manager.build_output_fileset_for_current_task()
             auto_refresh = False
     return render(request, 'tasks.html', context={'task_names': TASK_REGISTRY.keys(), 'current_task': current_task, 'auto_refresh': auto_refresh})
 

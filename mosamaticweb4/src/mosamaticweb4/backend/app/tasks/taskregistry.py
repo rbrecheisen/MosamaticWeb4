@@ -4,10 +4,10 @@ from ..tasks.copyfilestask.copyfilestask import CopyFilesTask
 TASK_REGISTRY = {
     'CopyFilesTask': {
         'class': CopyFilesTask,
-        'input_filesets': [
+        'input_fileset_names': [
             'fileset',
         ],
-        'output_fileset': 'copyfilestask',
+        'output_fileset_name': 'copyfilestask',
         'params': [
             'delay',
         ],

@@ -21,6 +21,10 @@ class FileSetModel(models.Model):
         return FileModel.objects.filter(fileset=self).count()
     
     @property
+    def files(self):
+        return FileModel.objects.filter(fileset=self).all()
+    
+    @property
     def file_paths(self):
         file_paths = []
         for f in FileModel.objects.filter(fileset=self).all():

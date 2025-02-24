@@ -15,11 +15,13 @@ class TaskStatus(Enum):
 
 
 class Task(threading.Thread):
-    def __init__(self, input_filesets, params):
+    def __init__(self, input_filesets, params, output_fileset_dir, queue):
         super(Task, self).__init__()
         self._name = self.__class__.__name__
         self._input_filesets = input_filesets
         self._params = params
+        self._output_fileset_dir = output_fileset_dir
+        self._queue = queue
         self._cancel_event = threading.Event()
         self._progress = 0
         self._status = TaskStatus.IDLE
@@ -40,6 +42,10 @@ class Task(threading.Thread):
     @property
     def params(self):
         return self._params
+    
+    @property
+    def output_fileset_dir(self):
+        return self._output_fileset_dir
 
     @property
     def progress(self):

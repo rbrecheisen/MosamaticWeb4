@@ -7,6 +7,7 @@ TASK_REGISTRY = {
         'input_filesets': [
             'fileset',
         ],
+        'output_fileset': 'copyfilestask',
         'params': [
             'delay',
         ],

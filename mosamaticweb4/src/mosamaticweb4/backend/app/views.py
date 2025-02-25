@@ -165,6 +165,11 @@ def task(request, task_name):
 
 @login_required
 def pipeline(request):
+    """
+    Runs pipeline automatically. The POST request should contain a JSON structure
+    describing the pipeline. The app should also automatically look in the input
+    directory specified there and load the image into a fileset.
+    """
     pass
 
 

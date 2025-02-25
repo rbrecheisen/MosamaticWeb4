@@ -87,10 +87,10 @@ class Task(threading.Thread):
         self.log_info(f'status = {status.value} ({message})')
 
     def log_info(self, message):
-        LOG.info(f'{self._class__.__name__}: {message}')
+        LOG.info(f'{self.__class__.__name__}: {message}')
 
     def log_warning(self, message):
-        LOG.warning(f'{self._class__.__name__}: {message}')
+        LOG.warning(f'{self.__class__.__name__}: {message}')
 
     def log_error(self, message):
-        LOG.error(f'{self._class__.__name__}: {message}')
+        LOG.error(f'{self.__class__.__name__}: {message}')

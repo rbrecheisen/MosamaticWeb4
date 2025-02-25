@@ -1,17 +1,20 @@
 import os
+import csv
 
 from django.shortcuts import redirect, render
+from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, FileResponse, Http404
 from wsgiref.util import FileWrapper
 
 from .managers.datamanager import DataManager
 from .managers.logmanager import LogManager
 from .managers.taskmanager import TaskManager
 from .tasks.taskregistry import TASK_REGISTRY
+from .models import FileModel
 
 LOG = LogManager()
 
@@ -61,10 +64,59 @@ def fileset(request, fileset_id):
             LOG.info(f'Renamed fileset {fileset.name()} to {new_name}')
         else:
             pass
-        return render(request, 'fileset.html', context={'fileset': fileset, 'files': manager.get_files(fileset)})
+        return render(request, 'fileset.html', context={'fileset': fileset, 'files': manager.get_files(fileset), 'media_url': settings.MEDIA_URL})
     message = f'Wrong method ({request.method}) or action ({action})'
     LOG.error(message)
     return HttpResponseForbidden(message)
+
+
+@login_required
+def file(request, file_id):
+    if request.method == 'GET':
+        f = FileModel.objects.get(pk=file_id)
+        file_path = os.path.join(settings.MEDIA_ROOT, f.path())
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), as_attachment=True)
+    return Http404(f'File {file_id} not found')
+
+
+@login_required
+def file_to_png(request, file_id):
+    if request.method == 'GET':
+        f = FileModel.objects.get(pk=file_id)
+        file_path = os.path.join(settings.MEDIA_ROOT, f.path())
+        if os.path.exists(file_path):
+            return render(request, 'png.html', context={'png_image': f})
+    return Http404(f'File {file_id} not found')
+
+
+@login_required
+def file_to_csv(request, file_id):
+    if request.method == 'GET':
+        f = FileModel.objects.get(pk=file_id)
+        file_path = os.path.join(settings.MEDIA_ROOT, f.path())
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as f_obj:
+                csv_reader = csv.reader(f_obj, delimiter=';')
+                data = list(csv_reader)
+            if not data:
+                raise Http404(f'File {file_id} is empty')
+            headers = data[0]  # First row as headers
+            rows = data[1:]
+            return render(request, 'csv.html', context={'csv_file': f, 'headers': headers, 'rows': rows})
+    return Http404(f'File {file_id} not found')
+
+
+@login_required
+def file_to_text(request, file_id):
+    if request.method == 'GET':
+        f = FileModel.objects.get(pk=file_id)
+        file_path = os.path.join(settings.MEDIA_ROOT, f.path())
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as f_obj:
+                content = f_obj.read()
+            return render(request, 'text.html', context={'txt_file': f, 'content': content})
+    return Http404(f'File {file_id} not found')
 
 
 @login_required

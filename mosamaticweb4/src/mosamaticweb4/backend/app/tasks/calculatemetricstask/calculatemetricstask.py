@@ -47,7 +47,7 @@ class CalculateMetricsTask(Task):
         segmentations_dir = self.get_input_dir('segmentation_fileset')
         img_seg_pairs = self.collect_img_seg_pairs(input_dir, segmentations_dir)
         patient_heights = None
-        patient_heights_file = self.get_input_dir('patient_heights_fileset', None)
+        patient_heights_file = self.get_input_dir('patient_heights_fileset')
         if patient_heights_file:
             patient_heights = self.load_patient_heights(patient_heights_file)
             self.log_info(f'Patient heights: {patient_heights}')

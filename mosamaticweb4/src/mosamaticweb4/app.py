@@ -24,6 +24,7 @@ def run_server():
     execute_from_command_line(['manage.py', 'makemigrations'])
     execute_from_command_line(['manage.py', 'migrate'])
     execute_from_command_line(['manage.py', 'create_admin_user'])
+    execute_from_command_line(['manage.py', 'clear_logs'])
     execute_from_command_line(['manage.py', 'runserver', '0.0.0.0:8000'])
 
 

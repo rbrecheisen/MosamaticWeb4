@@ -22,22 +22,18 @@
                             {% endfor %}
                         </select>
                         <br>
-                        <select class="form-select" name="model_fileset">
-                            <option selected>Select model files</option>
+                        <select class="form-select" name="segmentation_fileset">
+                            <option selected>Select segmentations</option>
                             {% for fileset in filesets %}
                                 <option value="{{ fileset.id }}">{{ fileset.name }}</option>
                             {% endfor %}
                         </select>
                         <br>
-                        <label for="model_type" class="form-label">Model type</label>
-                        <select class="form-select" name="model_type">
-                            <option selected value="tensorflow">tensorflow</option>
-                            <option value="torch">torch</option>
-                        </select>
-                        <br>
-                        <label for="model_version" class="form-label">Model version</label>
-                        <select class="form-select" name="model_version">
-                            <option selected value="1.0">1.0</option>
+                        <select class="form-select" name="patient_heights_fileset">
+                            <option selected>Select patient heights (optional)</option>
+                            {% for fileset in filesets %}
+                                <option value="{{ fileset.id }}">{{ fileset.name }}</option>
+                            {% endfor %}
                         </select>
                         <br>
                         <button type="submit" class="btn btn-primary">Run task</button>

@@ -16,7 +16,7 @@
                         <input type="hidden" name="task_name" value="{{ task_name }}">
                         <input type="hidden" name="cancel" value="0">
                         <select class="form-select" name="fileset">
-                            <option selected>Select input fileset</option>
+                            <option selected>Select files</option>
                             {% for fileset in filesets %}
                                 <option value="{{ fileset.id }}">{{ fileset.name }}</option>
                             {% endfor %}

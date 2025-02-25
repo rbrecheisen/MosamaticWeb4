@@ -27,7 +27,7 @@ class DataManager:
             FileModel object created.
         """
         return FileModel.objects.create(
-            name=os.path.split(path)[1], path=path, fileset=fileset)
+            _name=os.path.split(path)[1], _path=path, _fileset=fileset)
     
     @staticmethod
     def create_fileset(user, name=None):
@@ -50,13 +50,13 @@ class DataManager:
         fileset_name = name
         if name is None or name == '':
             fileset_name = 'fileset-{}'.format(timezone.now().strftime('%Y%m%d%H%M%S'))
-        fileset = FileSetModel.objects.create(name=fileset_name, owner=user)
+        fileset = FileSetModel.objects.create(_name=fileset_name, _owner=user)
         return fileset
        
     @staticmethod
     def get_filesets(user):
         if not user.is_staff:
-            return FileSetModel.objects.filter(Q(owner=user))
+            return FileSetModel.objects.filter(Q(_owner=user))
         return FileSetModel.objects.all()
 
     @staticmethod
@@ -65,7 +65,7 @@ class DataManager:
     
     @staticmethod
     def get_files(fileset):
-        return FileModel.objects.filter(fileset=fileset).all()
+        return FileModel.objects.filter(_fileset=fileset).all()
 
     @staticmethod
     def delete_fileset(fileset):
@@ -73,14 +73,14 @@ class DataManager:
 
     @staticmethod
     def rename_fileset(fileset, new_name):
-        fileset.name = new_name
+        fileset._name = new_name
         fileset.save()
         return fileset
 
     def get_zip_file_from_fileset(self, fileset):
         files = self.get_files(fileset)
-        zip_file_path = os.path.join(fileset.path, '{}.zip'.format(fileset.name))
+        zip_file_path = os.path.join(fileset.path(), '{}.zip'.format(fileset.name()))
         with ZipFile(zip_file_path, 'w') as zip_obj:
             for f in files:
-                zip_obj.write(f.path, arcname=basename(f.path))
+                zip_obj.write(f.path, arcname=basename(f.path()))
         return zip_file_path

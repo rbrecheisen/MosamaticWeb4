@@ -28,9 +28,9 @@ def filesets(request):
         files = request.FILES.getlist('files')
         if len(files) > 0:
             fileset = manager.create_fileset(request.user, fileset_name)
-            LOG.info(f'Created new fileset {fileset.name} with {len(files)} files')
+            LOG.info(f'Created new fileset {fileset.name()} with {fileset.size()} files')
             for f in files:
-                f_path = os.path.join(str(fileset.id), f.name)
+                f_path = os.path.join(str(fileset.id()), f.name)
                 default_storage.save(f_path, ContentFile(f.read()))
                 manager.create_file(f_path, fileset)
                 LOG.info(f'Added file {f_path} to fileset')
@@ -48,17 +48,17 @@ def fileset(request, fileset_id):
             zip_file_path = manager.get_zip_file_from_fileset(fileset)
             with open(zip_file_path, 'rb') as f:
                 response = HttpResponse(FileWrapper(f), content_type='application/zip')
-                response['Content-Disposition'] = 'attachment; filename="{}.zip"'.format(fileset.name)
-            LOG.info(f'Created ZIP archive for fileset {fileset.name} ({zip_file_path})')
+                response['Content-Disposition'] = 'attachment; filename="{}.zip"'.format(fileset.name())
+            LOG.info(f'Created ZIP archive for fileset {fileset.name()} ({zip_file_path})')
             return response
         elif action == 'delete':
             manager.delete_fileset(fileset)
-            LOG.info(f'Deleted fileset {fileset.name}')
+            LOG.info(f'Deleted fileset {fileset.name()}')
             return render(request, 'filesets.html', context={'filesets': manager.get_filesets(request.user)})
         elif action == 'rename':
             new_name = request.GET.get('new_name')
-            fileset = manager.rename_fileset(fileset, new_name)
-            LOG.info(f'Renamed fileset {fileset.name} to {new_name}')
+            manager.rename_fileset(fileset, new_name)
+            LOG.info(f'Renamed fileset {fileset.name()} to {new_name}')
         else:
             pass
         return render(request, 'fileset.html', context={'fileset': fileset, 'files': manager.get_files(fileset)})
@@ -88,7 +88,7 @@ def tasks(request):
             task_manager.cancel_current_task()
     current_task = task_manager.get_current_task()
     if current_task:
-        if current_task.status == 'completed' or current_task.status == 'failed' or current_task.status == 'canceled':
+        if current_task.get_status() == 'completed' or current_task.get_status() == 'failed' or current_task.get_status() == 'canceled':
             auto_refresh = False
     return render(request, 'tasks.html', context={'task_names': TASK_REGISTRY.keys(), 'current_task': current_task, 'auto_refresh': auto_refresh})
 

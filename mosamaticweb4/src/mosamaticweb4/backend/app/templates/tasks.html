@@ -55,14 +55,14 @@
                         </tr>
                         {% if current_task %}
                             <tr>
-                                <td>{{ current_task.name }}</td>
-                                <td>{{ current_task.status }}</td>
-                                <td>{{ current_task.progress }}</td>
+                                <td>{{ current_task.get_name }}</td>
+                                <td>{{ current_task.get_status }}</td>
+                                <td>{{ current_task.get_progress }}</td>
                                 <td>
-                                    {% if current_task.status == "running" %}
+                                    {% if current_task.get_status == "running" %}
                                     <a href="/tasks/?cancel=1">[cancel]</a>
                                     {% endif %}
-                                    {% if current_task.status == "completed" or current_task.status == "failed" or current_task.status == "canceled" %}
+                                    {% if current_task.get_status == "completed" or current_task.get_status == "failed" or current_task.get_status == "canceled" %}
                                         <a href="/tasks/?remove=1">[remove]</a>
                                     {% endif %}
                                 </td>

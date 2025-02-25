@@ -29,22 +29,9 @@ class Task(threading.Thread):
         self._status = TaskStatus.IDLE
         self.notify_finished = notify_finished_callback
 
-    # PROPERTIES
-
-    @property
-    def name(self):
+    def get_name(self):
         return self._name
     
-    @property
-    def progress(self):
-        return self._progress
-
-    @property
-    def status(self):
-        return self._status.value
-    
-    # FUNCTIONS
-
     def get_input_dir(self, name):
         if name in self._input_dirs.keys():
             return self._input_dirs[name]
@@ -90,10 +77,16 @@ class Task(threading.Thread):
         self._cancel_event.set()
         self.set_status(TaskStatus.CANCELED)
 
+    def get_progress(self):
+        return self._progress
+
     def set_progress(self, step, nr_steps):
         self._progress = int(((step + 1) / (nr_steps)) * 100)
         LOG.info(f'{self.__class__.__name__}: progress = {self._progress}')
 
+    def get_status(self):
+        return self._status.value
+    
     def set_status(self, status, message=None):
         self._status = status
         LOG.info(f'{self.__class__.__name__}: status = {status.value} ({message})')

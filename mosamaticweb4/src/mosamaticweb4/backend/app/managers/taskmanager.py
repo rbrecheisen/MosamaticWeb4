@@ -34,13 +34,13 @@ class TaskManager:
                 fileset_id = request.POST.get(fileset_name, None)
                 if fileset_id:
                     fs = manager.get_fileset(fileset_id)
-                    input_dirs[fileset_name] = fs.path
+                    input_dirs[fileset_name] = fs.path()
 
             # Create output fileset and get its directory. This will be passed to
             # task later as output directory
             output_fileset_name = task_info['output_fileset_name']
             self._current_output_fileset = manager.create_fileset(request.user, output_fileset_name)
-            output_dir = self._current_output_fileset.path
+            output_dir = self._current_output_fileset.path()
 
             # Retrieve task parameters
             params = {}

@@ -10,7 +10,7 @@ class LogManager:
         pass
 
     def write_to_db(self, message, mode):
-        LogOutputModel.objects.create(message=message, mode=mode)
+        LogOutputModel.objects.create(_message=message, _mode=mode)
 
     def info(self, message):
         LOG.info(message)

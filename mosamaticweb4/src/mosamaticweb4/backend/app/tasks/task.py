@@ -77,11 +77,20 @@ class Task(threading.Thread):
 
     def set_progress(self, step, nr_steps):
         self._progress = int(((step + 1) / (nr_steps)) * 100)
-        LOG.info(f'{self.__class__.__name__}: progress = {self._progress}')
+        self.log_info(f'progress = {self._progress}')
 
     def get_status(self):
         return self._status.value
     
     def set_status(self, status, message=None):
         self._status = status
-        LOG.info(f'{self.__class__.__name__}: status = {status.value} ({message})')
+        self.log_info(f'status = {status.value} ({message})')
+
+    def log_info(self, message):
+        LOG.info(f'{self._class__.__name__}: {message}')
+
+    def log_warning(self, message):
+        LOG.warning(f'{self._class__.__name__}: {message}')
+
+    def log_error(self, message):
+        LOG.error(f'{self._class__.__name__}: {message}')

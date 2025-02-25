@@ -42,7 +42,7 @@ class MuscleFatSegmentationL3Task(Task):
     def process_file(self, f_path, output_dir, model, contour_model, params, model_type):
         p = load_dicom(f_path)
         if p is None:
-            LOG.warning(f'File {f_path} is not valid DICOM, skipping...')
+            self.log_warning(f'File {f_path} is not valid DICOM, skipping...')
             return
         img1 = get_pixels_from_dicom_object(p, normalize=True)        
         if contour_model:

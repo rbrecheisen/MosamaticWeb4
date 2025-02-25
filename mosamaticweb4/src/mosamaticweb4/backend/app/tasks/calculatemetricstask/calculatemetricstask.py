@@ -4,10 +4,7 @@ import numpy as np
 import pandas as pd
 
 from ..task import Task
-from ...managers.logmanager import LogManager
 from ...utils import calculate_area, calculate_index, calculate_mean_radiation_attenuation, get_pixels_from_dicom_object, load_dicom
-
-LOG = LogManager()
 
 MUSCLE, VAT, SAT = 1, 5, 7
 
@@ -53,7 +50,7 @@ class CalculateMetricsTask(Task):
         patient_heights_file = self.get_input_dir('patient_heights_fileset', None)
         if patient_heights_file:
             patient_heights = self.load_patient_heights(patient_heights_file)
-            LOG.info(f'Patient heights: {patient_heights}')
+            self.log_info(f'Patient heights: {patient_heights}')
         # Create empty data dictionary
         data = {
             'file': [], 

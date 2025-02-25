@@ -1,9 +1,12 @@
 from ..tasks.copyfilestask.copyfilestask import CopyFilesTask
+from ..tasks.decompressdicomfilestask.decompressdicomfilestask import DecompressDicomFilesTask
+from ..tasks.rescaledicomfilestask.rescaledicomfilestask import RescaleDicomFilesTask
 
 
 TASK_REGISTRY = {
     'CopyFilesTask': {
         'class': CopyFilesTask,
+        'description': 'Copies files to new fileset without modification',
         'input_fileset_names': [
             'fileset',
         ],
@@ -11,7 +14,27 @@ TASK_REGISTRY = {
         'params': [
             'delay',
         ],
-    }
+    },
+    'DecompressDicomFilesTask': {
+        'class': DecompressDicomFilesTask,
+        'description': 'Decompresses DICOM files (if necessary)',
+        'input_fileset_names': [
+            'fileset',
+        ],
+        'output_fileset_name': 'decompressdicomfilestask',
+        'params': None,
+    },
+    'RescaleDicomFilesTask': {
+        'class': RescaleDicomFilesTask,
+        'description': 'Rescales DICOM files (if necessary) to a square target size (default: 512)',
+        'input_fileset_names': [
+            'fileset',
+        ],
+        'output_fileset_name': 'rescaledicomfilestask',
+        'params': [
+            'target_size',
+        ],
+    },
 }
 
 # from mosamaticdesktop.tasks.copyfilestask.copyfilestask import CopyFilesTask

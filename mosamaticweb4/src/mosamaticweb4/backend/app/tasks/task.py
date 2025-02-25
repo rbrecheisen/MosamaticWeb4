@@ -1,3 +1,4 @@
+import os
 import threading
 
 from enum import Enum
@@ -22,6 +23,7 @@ class Task(threading.Thread):
         self._name = self.__class__.__name__
         self._input_dirs = input_dirs
         self._output_dir = output_dir
+        os.makedirs(self._output_dir, exist_ok=True)
         self._params = params
         self._queue = queue
         self._cancel_event = threading.Event()
@@ -49,14 +51,10 @@ class Task(threading.Thread):
         raise NotImplementedError()
 
     def run(self):
-
-        # Set task status to running
         self.set_status(TaskStatus.RUNNING)
-
         try:
             # Execute child task and gets its output files
             file_paths = self.execute()
-
             # Check if task was canceled. If not, set its status to
             # completed, queue the output files and notify the task
             # manager that the task is finished
@@ -64,10 +62,7 @@ class Task(threading.Thread):
                 self.set_status(TaskStatus.COMPLETED)
                 self._queue.put(file_paths)
                 self.notify_finished()
-
         except Exception as e:
-            
-            # Some exception occurred, so set task status to failed
             self.set_status(TaskStatus.FAILED, str(e))
 
     def is_canceled(self):

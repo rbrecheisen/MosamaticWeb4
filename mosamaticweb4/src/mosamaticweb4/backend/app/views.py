@@ -90,18 +90,25 @@ def tasks(request):
     if current_task:
         if current_task.get_status() == 'completed' or current_task.get_status() == 'failed' or current_task.get_status() == 'canceled':
             auto_refresh = False
-    return render(request, 'tasks.html', context={'task_names': TASK_REGISTRY.keys(), 'current_task': current_task, 'auto_refresh': auto_refresh})
+    return render(request, 'tasks.html', context={
+        'task_names': TASK_REGISTRY.keys(), 
+        'current_task': current_task, 
+        'auto_refresh': auto_refresh
+    })
 
 
 @login_required
 def task(request, task_name):
     data_manager = DataManager()
+    task_manager = TaskManager()
     if request.method == 'POST':
-        task_manager = TaskManager()
         task_manager.run_task_from_request(task_name, request)
         return redirect('/tasks/')
-    context = {'task_name': task_name, 'filesets': data_manager.get_filesets(request.user)}
-    return render(request, f'tasks/{task_name}.html', context=context)
+    return render(request, f'tasks/{task_name}.html', context={
+        'task_name': task_name, 
+        'task_description': task_manager.get_task_description(task_name), 
+        'filesets': data_manager.get_filesets(request.user)
+    })
 
 
 @login_required

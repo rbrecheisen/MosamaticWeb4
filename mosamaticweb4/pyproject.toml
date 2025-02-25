@@ -31,6 +31,18 @@ requires = [
     "django-guardian",
     "django-crispy-forms",
     "crispy-bootstrap5",
+    "pydicom",
+    "python-gdcm",
+    "pynetdicom",
+    "numpy",
+    "pandas",
+    "scipy",
+    "pillow",
+    "tensorflow",
+    "torch",
+    "torchvision",
+    "opencv-python",
+    "pendulum",
 ]
 
 test_requires = [

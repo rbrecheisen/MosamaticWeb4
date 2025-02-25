@@ -29,25 +29,32 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">Files</b></div>
                 <div class="card-body">
-                    <ul class="list-group">
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>File size (Kb)</th>
+                        </tr>
                         {% for f in files %}
-                            <li class="list-group-item">
-                                {% if f.name|endswith:"png" %}
-                                    <a href="{{ f.path }}">{{ f.name }}</a>
-                                {% elif f.png_path %}
-                                    <a href="{{ f.png_path }}">{{ f.name }}</a>
-                                {% elif f.name|endswith:"txt" %}
-                                    <a href="{{ f.path }}">{{ f.name }}</a>
-                                {% elif f.name|endswith:"json" %}
-                                    <a href="{{ f.path }}">{{ f.name }}</a>
-                                {% elif f.name|endswith:"csv" %}
-                                    <a href="{{ f.path }}">{{ f.name }}</a>
-                                {% else %}
-                                    {{ f.name }}
-                                {% endif %}
-                            </li>
+                            <tr>
+                                <td>
+                                    {% if f.name|endswith:"png" %}
+                                        <a href="{{ f.path }}">{{ f.name }}</a>
+                                    {% elif f.png_path %}
+                                        <a href="{{ f.png_path }}">{{ f.name }}</a>
+                                    {% elif f.name|endswith:"txt" %}
+                                        <a href="{{ f.path }}">{{ f.name }}</a>
+                                    {% elif f.name|endswith:"json" %}
+                                        <a href="{{ f.path }}">{{ f.name }}</a>
+                                    {% elif f.name|endswith:"csv" %}
+                                        <a href="{{ f.path }}">{{ f.name }}</a>
+                                    {% else %}
+                                        {{ f.name }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ f.size }}</td>
+                            </tr>
                         {% endfor %}
-                    </ul>
+                    </table>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import os
+import math
 import uuid
 import shutil
 
@@ -58,6 +59,11 @@ class FileModel(models.Model):
     
     def fileset(self):
         return self._fileset
+    
+    def size(self):
+        return int(math.floor(
+            os.path.getsize(os.path.join(
+                settings.MEDIA_ROOT, self.path())) / 1000.0))
 
     def __str__(self):
         return os.path.split(str(self.path()))[1]

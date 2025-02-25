@@ -170,7 +170,10 @@ def pipeline(request):
     describing the pipeline. The app should also automatically look in the input
     directory specified there and load the image into a fileset.
     """
-    pass
+    from .tasks.pipeline import Pipeline
+    pipeline = Pipeline()
+    pipeline.start()
+    return redirect('/filesets/')
 
 
 @login_required

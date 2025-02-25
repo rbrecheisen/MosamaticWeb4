@@ -1,6 +1,7 @@
 from ..tasks.copyfilestask.copyfilestask import CopyFilesTask
 from ..tasks.decompressdicomfilestask.decompressdicomfilestask import DecompressDicomFilesTask
 from ..tasks.rescaledicomfilestask.rescaledicomfilestask import RescaleDicomFilesTask
+from ..tasks.musclefatsegmentationl3task.musclefatsegmentationl3task import MuscleFatSegmentationL3Task
 
 
 TASK_REGISTRY = {
@@ -35,6 +36,19 @@ TASK_REGISTRY = {
             'target_size',
         ],
     },
+    'MuscleFatSegmentationL3Task': {
+        'class': MuscleFatSegmentationL3Task,
+        'description': 'Runs muscle and fat segmentation at L3',
+        'input_fileset_names': [
+            'fileset',
+            'model_fileset',
+        ],
+        'output_fileset_name': 'musclefatsegmentationl3task',
+        'params': [
+            'model_type',
+            'model_version',
+        ],
+    }
 }
 
 # from mosamaticdesktop.tasks.copyfilestask.copyfilestask import CopyFilesTask

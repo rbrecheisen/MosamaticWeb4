@@ -12,7 +12,7 @@ numpy
 pandas
 scipy
 pillow
-tensorflow
+tensorflow==2.15.0
 torch
 torchvision
 opencv-python

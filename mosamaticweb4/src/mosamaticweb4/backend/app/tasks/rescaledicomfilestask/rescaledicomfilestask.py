@@ -6,7 +6,7 @@ from scipy.ndimage import zoom
 
 from ..task import Task
 from ...managers.logmanager import LogManager
-from ...utils import is_jpeg2000_compressed, is_dicom, load_dicom
+from ...utils import load_dicom
 
 LOG = LogManager()
 

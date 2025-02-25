@@ -71,7 +71,7 @@ def fileset(request, fileset_id):
 
 
 @login_required
-def file(request, file_id):
+def file(request, fileset_id, file_id):
     if request.method == 'GET':
         f = FileModel.objects.get(pk=file_id)
         file_path = os.path.join(settings.MEDIA_ROOT, f.path())
@@ -81,17 +81,17 @@ def file(request, file_id):
 
 
 @login_required
-def file_to_png(request, file_id):
+def file_to_png(request, fileset_id, file_id):
     if request.method == 'GET':
         f = FileModel.objects.get(pk=file_id)
         file_path = os.path.join(settings.MEDIA_ROOT, f.path())
         if os.path.exists(file_path):
-            return render(request, 'png.html', context={'png_image': f})
+            return render(request, 'png.html', context={'png_image': f, 'fileset_id': fileset_id})
     return Http404(f'File {file_id} not found')
 
 
 @login_required
-def file_to_csv(request, file_id):
+def file_to_csv(request, fileset_id, file_id):
     if request.method == 'GET':
         f = FileModel.objects.get(pk=file_id)
         file_path = os.path.join(settings.MEDIA_ROOT, f.path())
@@ -103,19 +103,19 @@ def file_to_csv(request, file_id):
                 raise Http404(f'File {file_id} is empty')
             headers = data[0]  # First row as headers
             rows = data[1:]
-            return render(request, 'csv.html', context={'csv_file': f, 'headers': headers, 'rows': rows})
+            return render(request, 'csv.html', context={'csv_file': f, 'headers': headers, 'rows': rows, 'fileset_id': fileset_id})
     return Http404(f'File {file_id} not found')
 
 
 @login_required
-def file_to_text(request, file_id):
+def file_to_text(request, fileset_id, file_id):
     if request.method == 'GET':
         f = FileModel.objects.get(pk=file_id)
         file_path = os.path.join(settings.MEDIA_ROOT, f.path())
         if os.path.exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f_obj:
                 content = f_obj.read()
-            return render(request, 'text.html', context={'txt_file': f, 'content': content})
+            return render(request, 'text.html', context={'txt_file': f, 'content': content, 'fileset_id': fileset_id})
     return Http404(f'File {file_id} not found')
 
 

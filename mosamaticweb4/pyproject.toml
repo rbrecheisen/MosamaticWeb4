@@ -18,6 +18,7 @@ console_app = true
 
 sources = [
     "src/mosamaticweb4",
+    "src/models.py",
 ]
 
 test_sources = [

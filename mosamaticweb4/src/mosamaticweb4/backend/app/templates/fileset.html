@@ -38,11 +38,11 @@
                             <tr>
                                 <td>
                                     {% if f.name|endswith:"png" %}
-                                        <a href="/files/{{ f.id }}/png" target="_blank">{{ f.name }}</a>
+                                        <a href="/filesets/{{ fileset.id }}/files/{{ f.id }}/png">{{ f.name }}</a>
                                     {% elif f.name|endswith:"txt" or f.name|endswith:"json" %}
-                                        <a href="/files/{{ f.id }}/text", target="_blank">{{ f.name }}</a>
+                                        <a href="/filesets/{{ fileset.id }}/files/{{ f.id }}/text">{{ f.name }}</a>
                                     {% elif f.name|endswith:"csv" %}
-                                    <a href="/files/{{ f.id }}/csv" target="_blank">{{ f.name }}</a>
+                                    <a href="/filesets/{{ fileset.id }}/files/{{ f.id }}/csv">{{ f.name }}</a>
                                     {% else %}
                                         {{ f.name }}
                                     {% endif %}

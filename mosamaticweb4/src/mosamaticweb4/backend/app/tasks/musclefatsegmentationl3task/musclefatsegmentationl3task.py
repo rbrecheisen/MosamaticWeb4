@@ -7,9 +7,6 @@ from ..task import Task
 from .tensorflowmodel import TensorFlowModel
 from .torchmodel import TorchModel
 from ...utils import load_dicom, normalize_between, get_pixels_from_dicom_object, convert_labels_to_157
-from ...managers.logmanager import LogManager
-
-LOG = LogManager()
 
 
 class MuscleFatSegmentationL3Task(Task):

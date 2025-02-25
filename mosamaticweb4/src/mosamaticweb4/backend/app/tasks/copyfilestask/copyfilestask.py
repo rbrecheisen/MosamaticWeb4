@@ -3,9 +3,6 @@ import time
 import shutil
 
 from ..task import Task
-from ...managers.logmanager import LogManager
-
-LOG = LogManager()
 
 
 class CopyFilesTask(Task):

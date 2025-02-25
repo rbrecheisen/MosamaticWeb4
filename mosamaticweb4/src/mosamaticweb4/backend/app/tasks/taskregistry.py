@@ -3,6 +3,7 @@ from ..tasks.decompressdicomfilestask.decompressdicomfilestask import Decompress
 from ..tasks.rescaledicomfilestask.rescaledicomfilestask import RescaleDicomFilesTask
 from ..tasks.musclefatsegmentationl3task.musclefatsegmentationl3task import MuscleFatSegmentationL3Task
 from ..tasks.calculatemetricstask.calculatemetricstask import CalculateMetricsTask
+from ..tasks.createpngsfromsegmentationstask.createpngsfromsegmentationstask import CreatePngsFromSegmentationsTask
 
 
 TASK_REGISTRY = {
@@ -58,6 +59,15 @@ TASK_REGISTRY = {
             'segmentation_fileset',
         ],
         'output_fileset_name': 'calculatemetricstask',
+        'params': None,
+    },
+    'CreatePngsFromSegmentationsTask': {
+        'class': CreatePngsFromSegmentationsTask,
+        'description': 'Creates PNG images of segmentation masks',
+        'input_fileset_names': [
+            'segmentation_fileset',
+        ],
+        'output_fileset_name': 'createpngsfromsegmentationstask',
         'params': None,
     },
 }

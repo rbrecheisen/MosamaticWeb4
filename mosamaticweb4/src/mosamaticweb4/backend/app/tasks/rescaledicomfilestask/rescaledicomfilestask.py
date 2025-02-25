@@ -5,10 +5,7 @@ import numpy as np
 from scipy.ndimage import zoom
 
 from ..task import Task
-from ...managers.logmanager import LogManager
 from ...utils import load_dicom
-
-LOG = LogManager()
 
 
 class RescaleDicomFilesTask(Task):
